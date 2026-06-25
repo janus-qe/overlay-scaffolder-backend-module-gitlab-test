@@ -1,0 +1,38 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: gitlab-scaffolder-repo-push-e2e
+  title: GitLab repo push E2E
+  description: Commits files to a GitLab repository via gitlab:repo:push
+spec:
+  owner: user:guest
+  type: service
+  parameters:
+    - title: Repo push details
+      required:
+        - repoUrl
+        - commitMessage
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          description: GitLab repo URL in scaffolder format
+        commitMessage:
+          title: Commit message
+          type: string
+  steps:
+    - id: fetch-change
+      name: Fetch change file
+      action: fetch:plain
+      input:
+        url: ./content/catalog-info.yaml
+        targetPath: e2e-repo-push.yaml
+    - id: push
+      name: Push to GitLab repository
+      action: gitlab:repo:push
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        branchName: main
+        commitMessage: ${{ parameters.commitMessage }}
+        sourcePath: .
+        commitAction: create

@@ -1,0 +1,54 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: gitlab-scaffolder-publish-e2e
+  title: GitLab publish E2E
+  description: Creates a GitLab subgroup and publishes a new project
+spec:
+  owner: user:guest
+  type: service
+  parameters:
+    - title: GitLab publish
+      required:
+        - projectName
+        - groupPath
+        - repoUrl
+      properties:
+        projectName:
+          title: Project name
+          type: string
+          description: Name of the GitLab project to create
+        groupPath:
+          title: Subgroup path
+          type: string
+          description: Full GitLab group path (e.g. rhdh-qe-test/my-subgroup)
+        repoUrl:
+          title: Repository Location
+          type: string
+          description: GitLab repo URL in scaffolder format (used by group ensureExists)
+  steps:
+    - id: fetch-base
+      name: Fetch base content
+      action: fetch:plain
+      input:
+        url: ./content/catalog-info.yaml
+        targetPath: catalog-info.yaml
+    - id: ensure-group
+      name: Ensure GitLab subgroup exists
+      action: gitlab:group:ensureExists
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        path:
+          - ${{ parameters.groupPath }}
+    - id: publish
+      name: Publish to GitLab
+      action: publish:gitlab
+      input:
+        repoUrl: gitlab.com?repo=${{ parameters.projectName }}&owner=${{ parameters.groupPath }}
+        defaultBranch: main
+        gitCommitMessage: initial commit
+        sourcePath: .
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}

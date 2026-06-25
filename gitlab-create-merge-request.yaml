@@ -1,0 +1,46 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: gitlab-scaffolder-merge-request-e2e
+  title: GitLab merge request E2E
+  description: Opens a GitLab merge request via publish:gitlab:merge-request
+spec:
+  owner: user:guest
+  type: service
+  parameters:
+    - title: Merge request details
+      required:
+        - repoUrl
+        - mrTitle
+        - branchName
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          description: GitLab repo URL in scaffolder format
+        mrTitle:
+          title: Merge request title
+          type: string
+        branchName:
+          title: Source branch name
+          type: string
+  steps:
+    - id: fetch-change
+      name: Fetch change file
+      action: fetch:plain
+      input:
+        url: ./content/e2e-mr-change.yaml
+        targetPath: e2e-mr-change.yaml
+    - id: create-mr
+      name: Create merge request
+      action: publish:gitlab:merge-request
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        title: ${{ parameters.mrTitle }}
+        branchName: ${{ parameters.branchName }}
+        sourcePath: .
+        commitAction: create
+  output:
+    links:
+      - title: Merge Request
+        url: ${{ steps.create-mr.output.mergeRequestUrl }}

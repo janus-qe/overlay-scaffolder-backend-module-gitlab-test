@@ -1,0 +1,51 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: gitlab-scaffolder-project-tokens-e2e
+  title: GitLab project tokens E2E
+  description: Creates project access and deploy tokens via gitlab:projectAccessToken:create and gitlab:projectDeployToken:create
+spec:
+  owner: user:guest
+  type: service
+  parameters:
+    - title: Project token details
+      required:
+        - projectId
+        - repoUrl
+        - accessTokenName
+        - deployTokenName
+      properties:
+        projectId:
+          title: Project ID
+          type: number
+          description: Numeric GitLab project ID
+        repoUrl:
+          title: Repository Location
+          type: string
+          description: GitLab repo URL in scaffolder format
+        accessTokenName:
+          title: Access token name
+          type: string
+        deployTokenName:
+          title: Deploy token name
+          type: string
+  steps:
+    - id: create-access-token
+      name: Create project access token
+      action: gitlab:projectAccessToken:create
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        projectId: ${{ parameters.projectId }}
+        name: ${{ parameters.accessTokenName }}
+        scopes:
+          - read_api
+        accessLevel: 30
+    - id: create-deploy-token
+      name: Create project deploy token
+      action: gitlab:projectDeployToken:create
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        projectId: ${{ parameters.projectId }}
+        name: ${{ parameters.deployTokenName }}
+        scopes:
+          - read_repository

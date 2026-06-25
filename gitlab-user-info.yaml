@@ -1,0 +1,28 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: gitlab-scaffolder-user-info-e2e
+  title: GitLab user info E2E
+  description: Retrieves GitLab user info via gitlab:user:info
+spec:
+  owner: user:guest
+  type: service
+  parameters:
+    - title: GitLab user lookup
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          description: GitLab repo URL in scaffolder format
+  steps:
+    - id: user-info
+      name: Get current GitLab user
+      action: gitlab:user:info
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+  output:
+    links:
+      - title: User profile
+        url: ${{ steps.user-info.output.webUrl }}

@@ -1,0 +1,42 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: gitlab-scaffolder-project-variable-e2e
+  title: GitLab project variable E2E
+  description: Creates a project CI/CD variable via gitlab:projectVariable:create
+spec:
+  owner: user:guest
+  type: service
+  parameters:
+    - title: Project variable details
+      required:
+        - projectId
+        - repoUrl
+        - variableKey
+        - variableValue
+      properties:
+        projectId:
+          title: Project ID
+          type: number
+          description: Numeric GitLab project ID
+        repoUrl:
+          title: Repository Location
+          type: string
+          description: GitLab repo URL in scaffolder format
+        variableKey:
+          title: Variable key
+          type: string
+          description: CI/CD variable key (A-Z, a-z, 0-9, underscore only)
+        variableValue:
+          title: Variable value
+          type: string
+  steps:
+    - id: create-variable
+      name: Create project variable
+      action: gitlab:projectVariable:create
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        projectId: ${{ parameters.projectId }}
+        key: ${{ parameters.variableKey }}
+        value: ${{ parameters.variableValue }}
+        variableType: env_var
