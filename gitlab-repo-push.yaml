@@ -34,5 +34,4 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         branchName: main
         commitMessage: ${{ parameters.commitMessage }}
-        sourcePath: .
         commitAction: create

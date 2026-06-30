@@ -47,7 +47,6 @@ spec:
         repoUrl: gitlab.com?repo=${{ parameters.projectName }}&owner=${{ parameters.groupPath }}
         defaultBranch: main
         gitCommitMessage: initial commit
-        sourcePath: .
   output:
     links:
       - title: Repository
