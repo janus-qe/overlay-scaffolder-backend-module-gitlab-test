@@ -25,7 +25,7 @@ spec:
       name: Fetch change file
       action: fetch:plain
       input:
-        url: ./content/catalog-info.yaml
+        url: https://raw.githubusercontent.com/janus-qe/overlay-scaffolder-backend-module-gitlab-test/main/content/catalog-info.yaml
         targetPath: e2e-repo-push.yaml
     - id: push
       name: Push to GitLab repository

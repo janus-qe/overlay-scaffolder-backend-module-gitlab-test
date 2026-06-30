@@ -31,7 +31,7 @@ spec:
       name: Fetch base content
       action: fetch:plain
       input:
-        url: ./content/catalog-info.yaml
+        url: https://raw.githubusercontent.com/janus-qe/overlay-scaffolder-backend-module-gitlab-test/main/content/catalog-info.yaml
         targetPath: catalog-info.yaml
     - id: ensure-group
       name: Ensure GitLab subgroup exists
