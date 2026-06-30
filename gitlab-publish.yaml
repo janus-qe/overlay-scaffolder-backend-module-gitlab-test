@@ -29,7 +29,7 @@ spec:
   steps:
     - id: fetch-base
       name: Fetch base content
-      action: fetch:plain
+      action: fetch:plain:file
       input:
         url: https://github.com/janus-qe/overlay-scaffolder-backend-module-gitlab-test/blob/main/content/catalog-info.yaml
         targetPath: catalog-info.yaml

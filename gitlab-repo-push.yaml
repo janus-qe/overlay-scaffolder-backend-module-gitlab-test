@@ -23,7 +23,7 @@ spec:
   steps:
     - id: fetch-change
       name: Fetch change file
-      action: fetch:plain
+      action: fetch:plain:file
       input:
         url: https://github.com/janus-qe/overlay-scaffolder-backend-module-gitlab-test/blob/main/content/catalog-info.yaml
         targetPath: e2e-repo-push.yaml
