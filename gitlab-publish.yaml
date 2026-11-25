@@ -25,7 +25,7 @@ spec:
         repoUrl:
           title: Repository Location
           type: string
-          description: GitLab repo URL in scaffolder format (used by group ensureExists)
+          description: GitLab repo URL in scaffolder format (host?repo=<project>&owner=<group path>), used by group ensureExists and publish
   steps:
     - id: fetch-base
       name: Fetch base content
@@ -44,7 +44,7 @@ spec:
       name: Publish to GitLab
       action: publish:gitlab
       input:
-        repoUrl: gitlab.com?repo=${{ parameters.projectName }}&owner=${{ parameters.groupPath }}
+        repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
         gitCommitMessage: initial commit
   output:
